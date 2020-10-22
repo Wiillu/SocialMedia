@@ -19,10 +19,19 @@ namespace SocialMedia.Api.Controllers
         /* lo ideal es tener un método por cada httpd*/
         [HttpGet]
         public async  Task<IActionResult> GetPosts()
-        { 
+        { //solo manda una lista
             //la implmentación new es de dependecia no es inyeccion de dependecias
             var posts = await _postRepository.GetPosts();
             return Ok(posts);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPost(int id)
+        {
+            //la implmentación new es de dependecia no es inyeccion de dependecias
+            var post = await _postRepository.GetPost(id);
+            return Ok(post);
         }
     }
 }
