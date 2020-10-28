@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
-using SocialMedia.Infrastructure.Repositories;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SocialMedia.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class PostController : ControllerBase
     {
         //variable de lectura para referencias
@@ -28,6 +27,7 @@ namespace SocialMedia.Api.Controllers
         public async  Task<IActionResult> GetPosts()
         { //solo manda una lista
             //la implmentación new es de dependecia no es inyeccion de dependecias
+            
             var posts = await _postRepository.GetPosts();
             var postDto = _mapper.Map<IEnumerable<PostDto>>(posts);
                 /*posts.Select(x => new PostDto
@@ -39,6 +39,7 @@ namespace SocialMedia.Api.Controllers
                 UserId = x.UserId
             });*/
             return Ok(postDto);
+            //BadRequest()
         }
 
 
@@ -63,6 +64,12 @@ namespace SocialMedia.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(PostDto postDto)
         {
+            /*validacion manual
+             * if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }*/
+
             //la implmentación new es de dependecia no es inyeccion de dependecias
             var post = _mapper.Map<Post>(postDto);//mapeando
             /*new Post

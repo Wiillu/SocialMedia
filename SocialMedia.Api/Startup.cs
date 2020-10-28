@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Infrastructure.Data;
+using SocialMedia.Infrastructure.Filters;
 using SocialMedia.Infrastructure.Repositories;
+using System;
 
 namespace SocialMedia.Api
 {
@@ -36,6 +32,9 @@ namespace SocialMedia.Api
             {
                 //ayuda frenar las referencias circulares se instala Newtonsoft.Json. 
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }).ConfigureApiBehaviorOptions(options => 
+            {
+                //options.SuppressModelStateInvalidFilter = true;//quita la validacion del modelo y se puede validar manual
             });
 
             //services.AddControllers();
@@ -49,6 +48,14 @@ namespace SocialMedia.Api
             //services.AddTransient<IPostRepository, PostMongoRepository>(); //cambiar el repositorio
             services.AddTransient<IPostRepository, PostRepository>();
 
+            //añadimos el filtro de manera global
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            }).AddFluentValidation(options =>
+            {
+                options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });//registramos las validaciones creadas
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
