@@ -11,5 +11,9 @@ namespace SocialMedia.Core.Interfaces
         Task<Post> GetPost(int id);
         //tarea que inserta Post
         Task InsertPost(Post post);
+
+        Task<bool> UpdatePost(Post post);
+
+        Task<bool> DeletePost(int id);
     }
 }

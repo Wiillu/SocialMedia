@@ -39,7 +39,29 @@ namespace SocialMedia.Infrastructure.Repositories
 
         }
 
+        public async Task<bool> UpdatePost(Post post)
+        {
+            //instaciamos el post currentPost pasandole el id que buscamos y post le pasamos el dato
+            var currentPost = await GetPost(post.PostId);
+            currentPost.Date = post.Date;
+            currentPost.Description = post.Description;
+            currentPost.Image = post.Image;
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+            //valida si se afecto la actualización
+        }
 
+
+        public async Task<bool> DeletePost(int id)
+        {
+            //instaciamos el post currentPost pasandole el id que buscamos y post le pasamos el dato
+            var currentPost = await GetPost(id);
+            //ayuda a eliminar se debe declarar en la interfaz Task<bool> DeletePost(int id)
+            _context.Posts.Remove(currentPost);
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+            //valida si se afecto la actualización
+        }
 
 
     }
