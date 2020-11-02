@@ -28,7 +28,6 @@ namespace SocialMedia.Infrastructure.Repositories
             //para accesder se debe declarar en la interfaz
             var posts = await _context.Posts.FirstOrDefaultAsync(x => x.PostId == id);
             return posts;
-
        }
         //añadir post
         public async Task InsertPost(Post post)
