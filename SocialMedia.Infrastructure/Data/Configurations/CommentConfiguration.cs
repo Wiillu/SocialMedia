@@ -10,9 +10,12 @@ namespace SocialMedia.Infrastructure.Data.Configurations
         {
             builder.ToTable("Comentario");//referencia a la tabla si le cambiamos el idioma para estandar de programacion
 
-            builder.HasKey(e => e.CommentId);
+            //builder.HasKey(e => e.CommentId);
 
-            builder.Property(e => e.CommentId)
+            builder.HasKey(e => e.Id);
+
+            //builder.Property(e => e.CommentId)
+            builder.Property(e => e.Id)
             .HasColumnName("IdComentario")
             .ValueGeneratedNever();
 
