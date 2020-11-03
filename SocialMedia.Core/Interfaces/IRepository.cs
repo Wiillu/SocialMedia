@@ -8,12 +8,12 @@ namespace SocialMedia.Core.Interfaces
     {
         //debe devolver la entidad en la que se realiza
 
-        Task<IEnumerable<T>> GetAll();
+        IEnumerable<T> GetAll();
         Task<T> GetById(int id);
 
         Task Add(T entity);
 
-        Task Update(T entity);
+        void Update(T entity);
 
         Task Delete(int id);
 

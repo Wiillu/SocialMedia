@@ -25,11 +25,11 @@ namespace SocialMedia.Api.Controllers
         }
         /* lo ideal es tener un método por cada httpd*/
         [HttpGet]
-        public async Task<IActionResult> GetPosts()
+        public IActionResult GetPosts()
         { //solo manda una lista
           //la implmentación new es de dependecia no es inyeccion de dependecias
 
-            var posts = await _postService.GetPosts();
+            var posts =  _postService.GetPosts();
             var postDto = _mapper.Map<IEnumerable<PostDto>>(posts);
             /*posts.Select(x => new PostDto
         { 

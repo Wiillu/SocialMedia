@@ -7,7 +7,7 @@ namespace SocialMedia.Core.Interfaces
     public interface IPostService
     {
         //Task InsertPost(Post post);
-        Task<IEnumerable<Post>> GetPosts();
+        IEnumerable<Post> GetPosts();
         Task<Post> GetPost(int id);
         //tarea que inserta Post
         Task InsertPost(Post post);

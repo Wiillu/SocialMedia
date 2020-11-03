@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿/*using Microsoft.EntityFrameworkCore;
 using SocialMedia.Core.Entities;
 using SocialMedia.Infrastructure.Data;
 using SocialMedia.Core.Interfaces;
@@ -28,4 +28,4 @@ namespace SocialMedia.Infrastructure.Repositories
             return user;
         }
     }
-}
+}*/

@@ -4,6 +4,7 @@ using SocialMedia.Core.Interfaces;
 using SocialMedia.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +13,9 @@ namespace SocialMedia.Infrastructure.Repositories
     //se crea una base para repositorio para los movimientos basicos tipo CRUD
     public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
+        //da acceso a la variable
         private readonly SocialMediaContext _context;
-        private DbSet<T> _entities;
+        protected DbSet<T> _entities;
         public BaseRepository(SocialMediaContext context)
         {
             _context = context;
@@ -34,9 +36,10 @@ namespace SocialMedia.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return await _entities.ToListAsync();
+            //return await _entities.ToListAsync();
+            return _entities.AsEnumerable();
         }
         
         public async Task<T> GetById(int id)
@@ -44,10 +47,10 @@ namespace SocialMedia.Infrastructure.Repositories
             return await _entities.FindAsync(id);
         }
         //actualiza toda la entidad
-        public async Task Update(T entity)
+        public void Update(T entity)
         {
             _entities.Update(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
     }
 }

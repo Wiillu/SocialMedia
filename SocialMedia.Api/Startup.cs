@@ -29,7 +29,10 @@ namespace SocialMedia.Api
         {
             //se mapea con automapper para validar los datos
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<GlobalExceptionFilter>();
+            }).AddNewtonsoftJson(options =>
             {
                 //ayuda frenar las referencias circulares se instala Newtonsoft.Json. 
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
