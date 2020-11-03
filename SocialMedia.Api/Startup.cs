@@ -48,11 +48,11 @@ namespace SocialMedia.Api
             //concecta la inerfaz con el repositorio
             //services.AddTransient<IPostRepository, PostMongoRepository>(); //cambiar el repositorio
             services.AddTransient<IPostService, PostService>();
-            services.AddTransient<IPostRepository, PostRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            //se registra el repositorio generico con la implementación generica
+            //services.AddTransient<IPostRepository, PostRepository>(); al crearse uno generico que es tipo CRUD se elimina
+            //services.AddTransient<IUserRepository, UserRepository>();
+            //se registra el repositorio generico para la implementación generica
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             //añadimos el filtro de manera global
             services.AddMvc(options =>
             {

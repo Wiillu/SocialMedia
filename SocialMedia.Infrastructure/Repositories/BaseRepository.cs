@@ -28,6 +28,7 @@ namespace SocialMedia.Infrastructure.Repositories
 
         public async Task Delete(int id)
         {
+            //variable tipo T que trae el ID
             T entity = await GetById(id);
             _entities.Remove(entity);
             await _context.SaveChangesAsync();
@@ -37,12 +38,12 @@ namespace SocialMedia.Infrastructure.Repositories
         {
             return await _entities.ToListAsync();
         }
-
+        
         public async Task<T> GetById(int id)
         {
             return await _entities.FindAsync(id);
         }
-
+        //actualiza toda la entidad
         public async Task Update(T entity)
         {
             _entities.Update(entity);
