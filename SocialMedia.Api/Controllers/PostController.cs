@@ -4,7 +4,10 @@ using SocialMedia.Api.Response;
 using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
+using SocialMedia.Core.QueryFilters;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SocialMedia.Api.Controllers
@@ -24,12 +27,15 @@ namespace SocialMedia.Api.Controllers
             _mapper = mapper;
         }
         /* lo ideal es tener un método por cada httpd*/
-        [HttpGet]
-        public IActionResult GetPosts()
+        [HttpGet]//FromQuery ayuda a pasar los paramteros
+        [ProducesResponseType((int)HttpStatusCode.OK, Type =typeof(ApiResponse<IEnumerable<PostDto>>))]//tipo de dato que envía se llama matricular para la documentación
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
+        public IActionResult GetPosts([FromQuery]PostQueryFilters filters) //tipo de respuest interfaz generica
+        //public ApiResponse<IEnumerable<PostDto>> GetPosts([FromQuery]PostQueryFilters filters)//es bueno para solo mostrar información
         { //solo manda una lista
           //la implmentación new es de dependecia no es inyeccion de dependecias
 
-            var posts =  _postService.GetPosts();
+            var posts =  _postService.GetPosts(filters);
             var postDto = _mapper.Map<IEnumerable<PostDto>>(posts);
             /*posts.Select(x => new PostDto
         { 
