@@ -51,6 +51,10 @@ namespace SocialMedia.Core.Services
         {//uqery filter
             //return await _postRepository.GetPosts(); se cambia por la del repositorio generico
             //return await _unitOfWork.PostRepository.GetAll();
+
+            filters.PageNumber = filters.PageNumber == 0 ? 1 : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? 70 : filters.PageSize;//paginación
+
             var posts = _unitOfWork.PostRepository.GetAll();
             if(filters.UserId != null)
             {

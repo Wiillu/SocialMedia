@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,10 @@ using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
 using SocialMedia.Infrastructure.Data;
 using SocialMedia.Infrastructure.Filters;
+using SocialMedia.Infrastructure.Interfaces;
+using SocialMedia.Infrastructure.Options;
 using SocialMedia.Infrastructure.Repositories;
+using SocialMedia.Infrastructure.Services;
 using System;
 
 namespace SocialMedia.Api
@@ -36,10 +40,13 @@ namespace SocialMedia.Api
             {
                 //ayuda frenar las referencias circulares se instala Newtonsoft.Json. 
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             }).ConfigureApiBehaviorOptions(options => 
             {
                 //options.SuppressModelStateInvalidFilter = true;//quita la validacion del modelo y se puede validar manual
             });
+
+            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
 
             //services.AddControllers();
             //hacemos la conexion a SocialMediaContext para que use conexion que esta en appsettings para obtener los datos
@@ -64,6 +71,14 @@ namespace SocialMedia.Api
             {
                 options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             });//registramos las validaciones creadas
+            //unica instancia
+            services.AddSingleton<IUriService>(provider =>
+            {
+                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
+                var request = accesor.HttpContext.Request;
+                var absoluteUri = string.Concat(request.Scheme,"://",request.Host.ToUriComponent());
+                return new UriService(absoluteUri);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
