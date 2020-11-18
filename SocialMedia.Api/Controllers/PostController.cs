@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -32,10 +33,16 @@ namespace SocialMedia.Api.Controllers
             _mapper = mapper;
             _uriService = uriService;
         }
+        /*swagger docs*/
+        /// <summary>
+        /// Retrive all posts
+        /// </summary>
+        /// <param name="filters">Filters to apply</param>
+        /// <returns></returns>
         /* lo ideal es tener un método por cada httpd*/
         [HttpGet(Name = nameof(GetPosts))]//FromQuery ayuda a pasar los paramteros
         [ProducesResponseType((int)HttpStatusCode.OK, Type =typeof(ApiResponse<IEnumerable<PostDto>>))]//tipo de dato que envía se llama matricular para la documentación
-        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<PostDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetPosts([FromQuery]PostQueryFilters filters) //tipo de respuest interfaz generica
         //public ApiResponse<IEnumerable<PostDto>> GetPosts([FromQuery]PostQueryFilters filters)//es bueno para solo mostrar información
         { //solo manda una lista
