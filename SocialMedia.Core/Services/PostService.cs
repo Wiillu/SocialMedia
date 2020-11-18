@@ -1,4 +1,5 @@
-﻿using SocialMedia.Core.CustomEntities;
+﻿using Microsoft.Extensions.Options;
+using SocialMedia.Core.CustomEntities;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Exceptions;
 using SocialMedia.Core.Interfaces;
@@ -22,17 +23,18 @@ namespace SocialMedia.Core.Services
         private readonly IRepository<Comment> _commentRepository;*/
 
         private readonly IUnitOfWork _unitOfWork;
-
+        private readonly PaginationOptions _paginationOptions;
         //reglas de negocios
         //public PostService(IPostRepository postRepository, IUserRepository userRepository)
 
         //public PostService(IRepository<Post> postRepository, IRepository<User> userRepository)//cuando se tiene el repositorio generico se deben declarar la interfaz generica con su entidad
 
-        public PostService(IUnitOfWork unitOfWork)//Llamamos donde se unificaron los repositorios
+        public PostService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)//Llamamos donde se unificaron los repositorios
         {//inyectamos las interfaces.
             /*_postRepository = postRepository;
             _userRepository = userRepository;*/
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;//inyecta cobfiguración del appsetting
         }
 
         public async Task<bool> DeletePost(int id)
@@ -52,8 +54,8 @@ namespace SocialMedia.Core.Services
             //return await _postRepository.GetPosts(); se cambia por la del repositorio generico
             //return await _unitOfWork.PostRepository.GetAll();
 
-            filters.PageNumber = filters.PageNumber == 0 ? 1 : filters.PageNumber;
-            filters.PageSize = filters.PageSize == 0 ? 70 : filters.PageSize;//paginación
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;//paginación
 
             var posts = _unitOfWork.PostRepository.GetAll();
             if(filters.UserId != null)

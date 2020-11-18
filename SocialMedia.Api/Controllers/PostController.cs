@@ -48,6 +48,7 @@ namespace SocialMedia.Api.Controllers
             /*posts.Select(x => new PostDto
         { 
             PostId = x.PostId,
+
             Date = x.Date,
             Description = x.Description,
             Image = x.Image,

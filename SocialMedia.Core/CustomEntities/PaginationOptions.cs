@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SocialMedia.Infrastructure.Options
+namespace SocialMedia.Core.CustomEntities
 {
     public class PaginationOptions
     {
